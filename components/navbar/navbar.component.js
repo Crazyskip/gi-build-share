@@ -1,21 +1,50 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { signInWithGoogle, signOutUser } from "../../firebase/firebase.utils";
 import {
-  HeaderContainer,
-  HeaderLogo,
+  NavbarContainer,
+  NavLogo,
   LinksContainer,
   MenuToggle,
   StyledLink,
-} from "./header.styles";
+} from "./navbar.styles";
 
-const Header = ({ loggedIn }) => {
+const Navbar = ({ loggedIn }) => {
   const [active, setActive] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    router.events.on("routeChangeComplete", () => setActive(false));
+    return () => {
+      router.events.off("routeChangeComplete", () => setActive(false));
+    };
+  }, [router.events]);
+
+  const signOut = () => {
+    signOutUser();
+    router.push("/");
+  };
+
   return (
-    <HeaderContainer>
+    <NavbarContainer>
       <Link href="/" passHref>
-        <HeaderLogo>GI Build Share</HeaderLogo>
+        <NavLogo>GI Build Share</NavLogo>
       </Link>
+      <MenuToggle
+        role="button"
+        tabIndex="0"
+        aria-pressed="false"
+        onClick={() => setActive(!active)}
+        onKeyDown={(e) =>
+          e.code === "Enter" || e.code === "Space" ? setActive(!active) : null
+        }
+        active={active}
+      >
+        <div></div>
+        <div></div>
+        <div></div>
+      </MenuToggle>
       <LinksContainer active={active}>
         <Link href="/" passHref>
           <StyledLink>Home</StyledLink>
@@ -25,7 +54,7 @@ const Header = ({ loggedIn }) => {
         </Link>
         {loggedIn ? (
           <>
-            <Link href="/" passHref>
+            <Link href="/profile" passHref>
               <StyledLink>Profile</StyledLink>
             </Link>
             <StyledLink
@@ -33,9 +62,9 @@ const Header = ({ loggedIn }) => {
               role="button"
               tabIndex="0"
               aria-pressed="false"
-              onClick={signOutUser}
+              onClick={signOut}
               onKeyDown={(e) =>
-                e.code === "Enter" || e.code === "Space" ? signOutUser() : null
+                e.code === "Enter" || e.code === "Space" ? signOut() : null
               }
             >
               Log out
@@ -58,23 +87,8 @@ const Header = ({ loggedIn }) => {
           </StyledLink>
         )}
       </LinksContainer>
-      <MenuToggle
-        as="div"
-        role="button"
-        tabIndex="0"
-        aria-pressed="false"
-        onClick={() => setActive(!active)}
-        onKeyDown={(e) =>
-          e.code === "Enter" || e.code === "Space" ? setActive(!active) : null
-        }
-        active={active}
-      >
-        <div></div>
-        <div></div>
-        <div></div>
-      </MenuToggle>
-    </HeaderContainer>
+    </NavbarContainer>
   );
 };
 
-export default Header;
+export default Navbar;

@@ -18,7 +18,7 @@ const getActiveStyles = (props) => {
   if (props.active) return activeStyles;
 };
 
-export const HeaderContainer = styled.nav`
+export const NavbarContainer = styled.nav`
   height: 65px;
   padding: 0 10px;
   background-color: #1b1d2a;
@@ -28,8 +28,12 @@ export const HeaderContainer = styled.nav`
   justify-content: space-between;
   color: #e6e6e6;
 
+  @media only screen and ${device.sm} {
+    padding: 0 20px;
+  }
+
   @media only screen and ${device.md} {
-    padding: 0 30px;
+    padding: 0 50px;
   }
 
   @media only screen and ${device.lg} {
@@ -37,7 +41,7 @@ export const HeaderContainer = styled.nav`
   }
 `;
 
-export const HeaderLogo = styled.a`
+export const NavLogo = styled.a`
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
@@ -81,6 +85,10 @@ export const MenuToggle = styled.div`
   height: 25px;
   width: ${({ active }) => (active ? "25px" : "33px")};
   transition: all 0.2s ease-in-out;
+
+  @media only screen and ${device.sm} {
+    right: ${({ active }) => (active ? "23px" : "20px")};
+  }
 
   div {
     position: absolute;
