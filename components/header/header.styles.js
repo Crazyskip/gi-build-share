@@ -20,13 +20,21 @@ const getActiveStyles = (props) => {
 
 export const HeaderContainer = styled.nav`
   height: 65px;
-  padding: 10px;
+  padding: 0 10px;
   background-color: #0c0c0c;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #e6e6e6;
+
+  @media only screen and ${device.md} {
+    padding: 0 30px;
+  }
+
+  @media only screen and ${device.lg} {
+    padding: 0 100px;
+  }
 `;
 
 export const HeaderLogo = styled.h1`
@@ -41,7 +49,7 @@ export const LinksContainer = styled.div`
     ${getActiveStyles}
   }
 
-  @media only screen and ${device.sm} {
+  @media only screen and ${device.md} {
     display: flex;
     justify-content: flex-end;
   }
@@ -50,7 +58,7 @@ export const LinksContainer = styled.div`
 export const StyledLink = styled.a`
   font-size: 1.8rem;
   font-weight: 600;
-  margin: 5px 0;
+  margin: 10px 0;
 
   &:hover {
     color: #fff;
@@ -58,7 +66,7 @@ export const StyledLink = styled.a`
     cursor: pointer;
   }
 
-  @media only screen and ${device.sm} {
+  @media only screen and ${device.md} {
     font-size: 1.2rem;
     margin: 0 15px;
   }
@@ -103,7 +111,7 @@ export const MenuToggle = styled.div`
     cursor: pointer;
   }
 
-  @media only screen and ${device.sm} {
+  @media only screen and ${device.md} {
     display: none;
   }
 `;
