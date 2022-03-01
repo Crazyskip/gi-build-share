@@ -13,12 +13,14 @@ const Header = ({ loggedIn }) => {
   const [active, setActive] = useState(false);
   return (
     <HeaderContainer>
-      <HeaderLogo>GI Build Share</HeaderLogo>
+      <Link href="/" passHref>
+        <HeaderLogo>GI Build Share</HeaderLogo>
+      </Link>
       <LinksContainer active={active}>
         <Link href="/" passHref>
           <StyledLink>Home</StyledLink>
         </Link>
-        <Link href="#" passHref>
+        <Link href="/" passHref>
           <StyledLink>Builds</StyledLink>
         </Link>
         {loggedIn ? (
@@ -56,7 +58,17 @@ const Header = ({ loggedIn }) => {
           </StyledLink>
         )}
       </LinksContainer>
-      <MenuToggle active={active} onClick={() => setActive(!active)}>
+      <MenuToggle
+        as="div"
+        role="button"
+        tabIndex="0"
+        aria-pressed="false"
+        onClick={() => setActive(!active)}
+        onKeyDown={(e) =>
+          e.code === "Enter" || e.code === "Space" ? setActive(!active) : null
+        }
+        active={active}
+      >
         <div></div>
         <div></div>
         <div></div>

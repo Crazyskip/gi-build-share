@@ -21,7 +21,7 @@ const getActiveStyles = (props) => {
 export const HeaderContainer = styled.nav`
   height: 65px;
   padding: 0 10px;
-  background-color: #0c0c0c;
+  background-color: #1b1d2a;
   width: 100%;
   display: flex;
   align-items: center;
@@ -37,7 +37,9 @@ export const HeaderContainer = styled.nav`
   }
 `;
 
-export const HeaderLogo = styled.h1`
+export const HeaderLogo = styled.a`
+  font-size: 1.5rem;
+  font-weight: bold;
   margin: 0;
   padding: 0;
 `;
@@ -74,36 +76,36 @@ export const StyledLink = styled.a`
 
 export const MenuToggle = styled.div`
   position: absolute;
-  top: 15px;
-  right: 10px;
-  height: 30px;
-  width: 30px;
+  top: 20px;
+  right: ${({ active }) => (active ? "13px" : "10px")};
+  height: 25px;
+  width: ${({ active }) => (active ? "25px" : "33px")};
+  transition: all 0.2s ease-in-out;
 
   div {
     position: absolute;
-    width: 30px;
+    width: 33px;
     height: 3px;
     background-color: #e6e6e6;
     border-radius: 5px;
-    transition: all 0.3s linear;
+    transition: all 0.2s linear;
     position: relative;
     transform-origin: 1px;
   }
 
   div:nth-child(1) {
-    top: 6px;
+    top: 0px;
     transform: ${({ active }) => (active ? "rotate(45deg)" : "rotate(0)")};
   }
 
   div:nth-child(2) {
-    top: 13px;
+    top: 8px;
     opacity: ${({ active }) => (active ? "0" : "1")};
-    transform: ${({ active }) =>
-      active ? "translateX(-20px)" : "translateX(0)"};
+    width: ${({ active }) => (active ? "0" : "33px")};
   }
 
   div:nth-child(3) {
-    top: 20px;
+    top: 16px;
     transform: ${({ active }) => (active ? "rotate(-45deg)" : "rotate(0)")};
   }
 
