@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import device from "../../commons/breakpoints";
+import { lightGrey, paleGrey, darkNavy } from "../../utils/colors";
 
 const activeStyles = css`
   position: absolute;
@@ -21,12 +22,12 @@ const getActiveStyles = (props) => {
 export const NavbarContainer = styled.nav`
   height: 65px;
   padding: 0 10px;
-  background-color: #1b1d2a;
+  background-color: ${darkNavy};
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #e6e6e6;
+  color: ${paleGrey};
 
   @media only screen and ${device.sm} {
     padding: 0 20px;
@@ -67,8 +68,7 @@ export const StyledLink = styled.a`
   margin: 10px 0;
 
   &:hover {
-    color: #fff;
-    text-decoration: underline;
+    color: ${lightGrey};
     cursor: pointer;
   }
 
@@ -94,7 +94,7 @@ export const MenuToggle = styled.div`
     position: absolute;
     width: 33px;
     height: 3px;
-    background-color: #e6e6e6;
+    background-color: ${paleGrey};
     border-radius: 5px;
     transition: all 0.2s linear;
     position: relative;

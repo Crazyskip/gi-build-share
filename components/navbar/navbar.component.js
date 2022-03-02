@@ -49,11 +49,11 @@ const Navbar = ({ loggedIn }) => {
         <Link href="/" passHref>
           <StyledLink>Home</StyledLink>
         </Link>
-        <Link href="/" passHref>
-          <StyledLink>Builds</StyledLink>
-        </Link>
         {loggedIn ? (
           <>
+            <Link href="/builds" passHref>
+              <StyledLink>Builds</StyledLink>
+            </Link>
             <Link href="/profile" passHref>
               <StyledLink>Profile</StyledLink>
             </Link>
