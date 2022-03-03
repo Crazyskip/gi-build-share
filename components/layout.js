@@ -7,18 +7,18 @@ import styled from "styled-components";
 import device from "../commons/breakpoints";
 
 const MainContainer = styled.main`
-  margin: 15px 10px 0px;
+  margin: 15px 10px;
 
   @media only screen and ${device.sm} {
-    margin: 15px 20px 0px;
+    margin: 15px 20px;
   }
 
   @media only screen and ${device.md} {
-    margin: 15px 50px 0px;
+    margin: 15px 50px;
   }
 
   @media only screen and ${device.xl} {
-    margin: 15px 150px 0px;
+    margin: 15px 150px;
   }
 `;
 

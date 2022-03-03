@@ -13,6 +13,7 @@ const activeStyles = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 999;
 `;
 
 const getActiveStyles = (props) => {
@@ -28,6 +29,7 @@ export const NavbarContainer = styled.nav`
   align-items: center;
   justify-content: space-between;
   color: ${paleGrey};
+  z-index: 999;
 
   @media only screen and ${device.sm} {
     padding: 0 20px;
