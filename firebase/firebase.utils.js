@@ -6,6 +6,7 @@ import {
   getDoc,
   getDocs,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "./firebase.config";
 
@@ -67,4 +68,26 @@ export const getBuilds = async () => {
     });
     console.log(builds);
   }
+};
+
+export const getUsername = async () => {
+  if (auth.currentUser) {
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    return data.username;
+  }
+
+  return undefined;
+};
+
+export const updateUser = async (username) => {
+  if (auth.currentUser && username !== "") {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    await updateDoc(userRef, {
+      username,
+    });
+    return { username };
+  }
+  return { error: "Failed to update user" };
 };

@@ -37,8 +37,8 @@ export const NavbarContainer = styled.nav`
     padding: 0 50px;
   }
 
-  @media only screen and ${device.lg} {
-    padding: 0 100px;
+  @media only screen and ${device.xl} {
+    padding: 0 150px;
   }
 `;
 

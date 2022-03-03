@@ -8,7 +8,7 @@ import {
   LinksContainer,
   MenuToggle,
   StyledLink,
-} from "./navbar.styles";
+} from "./Navbar.styles";
 
 const Navbar = ({ loggedIn }) => {
   const [active, setActive] = useState(false);

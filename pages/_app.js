@@ -1,4 +1,4 @@
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import { createGlobalStyle } from "styled-components";
 import { paleGrey, veryDarkNavy } from "../utils/colors";
 

@@ -1,8 +1,26 @@
 import { useEffect, useState } from "react";
-import Navbar from "./navbar/navbar.component";
+import Navbar from "./Navbar/Navbar.component";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import { checkNewUser } from "../firebase/firebase.utils";
+import styled from "styled-components";
+import device from "../commons/breakpoints";
+
+const MainContainer = styled.main`
+  margin: 15px 10px 0px;
+
+  @media only screen and ${device.sm} {
+    margin: 15px 20px 0px;
+  }
+
+  @media only screen and ${device.md} {
+    margin: 15px 50px 0px;
+  }
+
+  @media only screen and ${device.xl} {
+    margin: 15px 150px 0px;
+  }
+`;
 
 export default function Layout({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -28,7 +46,7 @@ export default function Layout({ children }) {
   return (
     <>
       <Navbar loggedIn={loggedIn} />
-      <main>{children}</main>
+      <MainContainer>{children}</MainContainer>
     </>
   );
 }
