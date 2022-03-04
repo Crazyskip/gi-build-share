@@ -3,7 +3,7 @@ import { BuildContainer, BuildTitle, StyledImage } from "./BuildItem.styles";
 
 const BuildItem = ({ build }) => {
   return (
-    <Link href="/" passHref>
+    <Link href="/build" passHref>
       <BuildContainer>
         <StyledImage
           src={build.summaryImg}

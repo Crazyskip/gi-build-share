@@ -57,17 +57,22 @@ export const addBuild = async () => {
   }
 };
 
-export const getBuilds = async () => {
-  if (auth.currentUser) {
-    const querySnapshot = await getDocs(
-      collection(db, "users", auth.currentUser.uid, "builds")
-    );
+export const getBuilds = async (userId) => {
+  if (userId) {
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) return { error: "User does not exist" };
+
+    const buildsSnap = await getDocs(collection(db, "users", userId, "builds"));
     const builds = [];
-    querySnapshot.forEach((doc) => {
+    buildsSnap.forEach((doc) => {
       builds.push({ id: doc.id, ...doc.data() });
     });
-    console.log(builds);
+    return { builds };
   }
+
+  return { error: "No userId" };
 };
 
 export const getUsername = async () => {
@@ -90,4 +95,19 @@ export const updateUser = async (username) => {
     return { username };
   }
   return { error: "Failed to update user" };
+};
+
+export const getBuild = async (userId, buildId) => {
+  if (!userId && !buildId) return { build: null };
+  const userRef = doc(db, "users", userId);
+  const buildRef = doc(db, "users", userId, "builds", buildId);
+  const userSnap = await getDoc(userRef);
+  const buildSnap = await getDoc(buildRef);
+  if (userSnap.exists && buildSnap.exists) {
+    const userData = userSnap.data();
+    const buildData = buildSnap.data();
+    buildData.username = userData.username;
+    return { build: buildData };
+  }
+  return { build: null };
 };
