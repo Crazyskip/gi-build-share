@@ -10,7 +10,7 @@ import {
   StyledLink,
 } from "./Navbar.styles";
 
-const Navbar = ({ loggedIn }) => {
+const Navbar = ({ isLoggedIn }) => {
   const [active, setActive] = useState(false);
   const router = useRouter();
 
@@ -49,7 +49,7 @@ const Navbar = ({ loggedIn }) => {
         <Link href="/" passHref>
           <StyledLink>Home</StyledLink>
         </Link>
-        {loggedIn ? (
+        {isLoggedIn ? (
           <>
             <Link href="/builds" passHref>
               <StyledLink>Builds</StyledLink>

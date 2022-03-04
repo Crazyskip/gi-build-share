@@ -75,14 +75,13 @@ export const getBuilds = async (userId) => {
   return { error: "No userId" };
 };
 
-export const getUsername = async () => {
-  if (auth.currentUser) {
-    const docRef = doc(db, "users", auth.currentUser.uid);
-    const docSnap = await getDoc(docRef);
+export const getUsername = async (userId) => {
+  const docRef = doc(db, "users", userId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
     const data = docSnap.data();
     return data.username;
   }
-
   return undefined;
 };
 

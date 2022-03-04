@@ -1,7 +1,8 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { getUsername, updateUser } from "../firebase/firebase.utils";
+import { UserContext } from "../utils/UserContext";
 
 const CustomInput = styled.input`
   font-size: 1.2rem;
@@ -9,11 +10,7 @@ const CustomInput = styled.input`
 
 const Profile = () => {
   const [username, setUsername] = useState("");
-
-  const getUser = async () => {
-    const usernameResponse = await getUsername();
-    if (usernameResponse) setUsername(usernameResponse);
-  };
+  const user = useContext(UserContext);
 
   const updateCurrentUser = async () => {
     const response = await updateUser(username);
@@ -24,12 +21,22 @@ const Profile = () => {
     e.preventDefault();
     if (username !== "") {
       updateCurrentUser();
+    } else {
+      alert("Failed to update username");
     }
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
+    const isMounted = true;
+
+    getUsername(user.uid).then((data) => {
+      if (isMounted && data) setUsername(data);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   return (
     <div>

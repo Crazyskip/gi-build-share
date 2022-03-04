@@ -5,6 +5,7 @@ import { auth } from "../firebase/firebase.config";
 import { checkNewUser } from "../firebase/firebase.utils";
 import styled from "styled-components";
 import device from "../commons/breakpoints";
+import { UserContext } from "../utils/UserContext";
 
 const MainContainer = styled.main`
   margin: 15px 10px;
@@ -23,30 +24,27 @@ const MainContainer = styled.main`
 `;
 
 export default function Layout({ children }) {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     const unsubscribeFromAuth = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        checkNewUser(user);
-        setLoggedIn(true);
-      } else {
-        setLoggedIn(false);
-      }
-      setLoading(false);
+      if (user) checkNewUser(user);
+      setCurrentUser(user);
+      setIsLoading(false);
     });
 
     return unsubscribeFromAuth;
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
-      <Navbar loggedIn={loggedIn} />
-      <MainContainer>{children}</MainContainer>
+      <Navbar isLoggedIn={currentUser ? true : false} />
+      <UserContext.Provider value={currentUser}>
+        <MainContainer>{children}</MainContainer>
+      </UserContext.Provider>
     </>
   );
 }

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { BuildContainer, BuildTitle, StyledImage } from "./BuildItem.styles";
 
-const BuildItem = ({ build }) => {
+const BuildItem = ({ build, userId }) => {
   return (
-    <Link href="/build" passHref>
+    <Link href={`/u/${userId}/${build.id}`} passHref>
       <BuildContainer>
         <StyledImage
           src={build.summaryImg}
@@ -11,6 +11,7 @@ const BuildItem = ({ build }) => {
           layout="responsive"
           height="200"
           width="350"
+          priority
         />
         <BuildTitle>{build.title}</BuildTitle>
       </BuildContainer>

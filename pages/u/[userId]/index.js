@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import useSWR from "swr";
+import BuildsBox from "../../../components/BuildsBox/BuildsBox.component";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -24,11 +24,7 @@ const Builds = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        {data.builds.map((build) => (
-          <Link href={`/u/${userId}/${build.id}`} key={build.id}>
-            <a>{build.title}</a>
-          </Link>
-        ))}
+        <BuildsBox builds={data.builds} userId={userId} />
       </div>
     </>
   );
