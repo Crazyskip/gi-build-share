@@ -8,7 +8,7 @@ const activeStyles = css`
   left: 0;
   height: calc(100vh - 65px);
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.85);
   padding-top: 20px;
   display: flex;
   flex-direction: column;

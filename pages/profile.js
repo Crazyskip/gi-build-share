@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { getUsername, updateUser } from "../firebase/firebase.utils";
@@ -11,6 +12,7 @@ const CustomInput = styled.input`
 const Profile = () => {
   const [username, setUsername] = useState("");
   const user = useContext(UserContext);
+  const router = useRouter();
 
   const updateCurrentUser = async () => {
     const response = await updateUser(username);
@@ -28,15 +30,20 @@ const Profile = () => {
 
   useEffect(() => {
     const isMounted = true;
-
-    getUsername(user.uid).then((data) => {
-      if (isMounted && data) setUsername(data);
-    });
+    if (!user) {
+      router.push("/");
+    } else {
+      getUsername(user.uid).then((data) => {
+        if (isMounted && data) setUsername(data);
+      });
+    }
 
     return () => {
       isMounted = false;
     };
   }, [user]);
+
+  useEffect(() => {}, []);
 
   return (
     <div>

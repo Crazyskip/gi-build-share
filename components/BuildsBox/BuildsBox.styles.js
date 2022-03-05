@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import device from "../../commons/breakpoints";
 
 export const BuildsContainer = styled.div`
   display: grid;
