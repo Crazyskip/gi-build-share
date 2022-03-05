@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { signInWithGoogle, signOutUser } from "../../firebase/firebase.utils";
+import { signInWithGoogle } from "../../firebase/firebase.utils";
+import { useAuth } from "../../hooks/useAuth";
 import {
   NavbarContainer,
   NavLogo,
@@ -13,6 +14,7 @@ import {
 const Navbar = ({ isLoggedIn }) => {
   const [active, setActive] = useState(false);
   const router = useRouter();
+  const auth = useAuth();
 
   useEffect(() => {
     router.events.on("routeChangeComplete", () => setActive(false));
@@ -22,7 +24,7 @@ const Navbar = ({ isLoggedIn }) => {
   }, [router.events]);
 
   const signOut = () => {
-    signOutUser();
+    auth.signout();
     router.push("/");
   };
 
@@ -76,11 +78,9 @@ const Navbar = ({ isLoggedIn }) => {
             role="button"
             tabIndex="0"
             aria-pressed="false"
-            onClick={signInWithGoogle}
+            onClick={auth.signin}
             onKeyDown={(e) =>
-              e.code === "Enter" || e.code === "Space"
-                ? signInWithGoogle()
-                : null
+              e.code === "Enter" || e.code === "Space" ? auth.signin() : null
             }
           >
             Log in

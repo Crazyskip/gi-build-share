@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getUsername, updateUser } from "../firebase/firebase.utils";
-import { UserContext } from "../utils/UserContext";
+import { updateUser } from "../firebase/firebase.utils";
+import { useAuth } from "../hooks/useAuth";
 
 const CustomInput = styled.input`
   font-size: 1.2rem;
@@ -11,8 +11,8 @@ const CustomInput = styled.input`
 
 const Profile = () => {
   const [username, setUsername] = useState("");
-  const user = useContext(UserContext);
   const router = useRouter();
+  const auth = useAuth();
 
   const updateCurrentUser = async () => {
     const response = await updateUser(username);
@@ -29,21 +29,12 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const isMounted = true;
-    if (!user) {
+    if (!auth.user) {
       router.push("/");
     } else {
-      getUsername(user.uid).then((data) => {
-        if (isMounted && data) setUsername(data);
-      });
+      setUsername(auth.user.username);
     }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [user]);
-
-  useEffect(() => {}, []);
+  }, [auth.user, router]);
 
   return (
     <div>
@@ -51,7 +42,7 @@ const Profile = () => {
         <title>Profile | GI Build Share</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      My Profile
+      Profile
       <form onSubmit={handleSubmit}>
         <div>
           <CustomInput
@@ -59,6 +50,7 @@ const Profile = () => {
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            autoComplete="off"
           />
         </div>
         <div>

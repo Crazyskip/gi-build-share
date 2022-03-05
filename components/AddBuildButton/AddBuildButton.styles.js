@@ -33,6 +33,7 @@ export const StyledButton = styled.a`
 
 export const Label = styled.span`
   display: none;
+  font-size: 1.1rem;
 
   @media only screen and ${device.sm} {
     display: block;

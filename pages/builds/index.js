@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
 import device from "../../commons/breakpoints";
 import AddBuildButton from "../../components/AddBuildButton/AddBuildButton.component";
 import BuildsBox from "../../components/BuildsBox/BuildsBox.component";
-import { UserContext } from "../../utils/UserContext";
+import { useAuth } from "../../hooks/useAuth";
 
 const StyledHeader = styled.header`
   display: flex;
@@ -26,16 +26,16 @@ const Title = styled.h1`
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const Builds = () => {
-  const user = useContext(UserContext);
+  const auth = useAuth();
   const router = useRouter();
   const { data } = useSWR(
-    () => (user.uid ? `/api/builds?userId=${user.uid}` : null),
+    () => (auth.user.uid ? `/api/builds?userId=${auth.user.uid}` : null),
     fetcher
   );
 
   useEffect(() => {
-    if (!user) router.push("/");
-  }, [user, router]);
+    if (!auth.user) router.push("/");
+  }, [auth.user, router]);
 
   if (!data) return <div>Loading...</div>;
 
@@ -49,7 +49,7 @@ const Builds = () => {
         <Title>My Builds</Title>
         <AddBuildButton />
       </StyledHeader>
-      <BuildsBox builds={data.builds} userId={user.uid} />
+      <BuildsBox builds={data.builds} userId={auth.user.uid} />
     </div>
   );
 };

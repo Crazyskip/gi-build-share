@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import { createGlobalStyle } from "styled-components";
 import { paleGrey, veryDarkNavy } from "../utils/colors";
+import { ProvideAuth } from "../hooks/useAuth";
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -27,9 +28,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <GlobalStyle />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ProvideAuth>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ProvideAuth>
     </>
   );
 }

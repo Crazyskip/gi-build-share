@@ -10,15 +10,6 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "./firebase.config";
 
-export const signInWithGoogle = () => {
-  const googleProvider = new GoogleAuthProvider();
-  signInWithRedirect(auth, googleProvider);
-};
-
-export const signOutUser = () => {
-  signOut(auth);
-};
-
 export const checkNewUser = async (user) => {
   const docRef = doc(db, "users", user.uid);
   const docSnap = await getDoc(docRef);
@@ -98,10 +89,12 @@ export const updateUser = async (username) => {
 
 export const getBuild = async (userId, buildId) => {
   if (!userId && !buildId) return { build: null };
+
   const userRef = doc(db, "users", userId);
   const buildRef = doc(db, "users", userId, "builds", buildId);
   const userSnap = await getDoc(userRef);
   const buildSnap = await getDoc(buildRef);
+
   if (userSnap.exists && buildSnap.exists) {
     const userData = userSnap.data();
     const buildData = buildSnap.data();
