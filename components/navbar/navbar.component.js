@@ -37,6 +37,7 @@ const Navbar = ({ isLoggedIn }) => {
         role="button"
         tabIndex="0"
         aria-pressed="false"
+        aria-label="Toggle nav menu"
         onClick={() => setActive(!active)}
         onKeyDown={(e) =>
           e.code === "Enter" || e.code === "Space" ? setActive(!active) : null

@@ -9,8 +9,8 @@ const BuildItem = ({ build, userId }) => {
           src={build.summaryImg}
           alt="build summary"
           layout="responsive"
-          height="200"
-          width="350"
+          height="675"
+          width="1200"
           priority
         />
         <BuildTitle>{build.title}</BuildTitle>
