@@ -1,4 +1,3 @@
-import { signInWithRedirect, GoogleAuthProvider, signOut } from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -8,7 +7,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { auth, db } from "./firebase.config";
+import { firebaseAuth, db } from "./firebase.config";
 
 export const checkNewUser = async (user) => {
   const docRef = doc(db, "users", user.uid);
@@ -35,7 +34,7 @@ export const addBuild = async () => {
 
   try {
     const docRef = await addDoc(
-      collection(db, "users", auth.currentUser.uid, "builds"),
+      collection(db, "users", firebaseAuth.currentUser.uid, "builds"),
       {
         title,
         description,
@@ -46,6 +45,34 @@ export const addBuild = async () => {
   } catch (error) {
     console.error("Error adding build", error.message);
   }
+};
+
+export const getUser = async (userId) => {
+  if (userId) {
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists())
+      return { error: { message: "User does not exist" } };
+
+    return { user: userSnap.data() };
+  }
+  return { error: { message: "No user ID" } };
+};
+
+export const getBuild = async (userId, buildId) => {
+  if (userId) {
+    if (buildId) {
+      const buildRef = doc(db, "users", userId, "builds", buildId);
+      const buildSnap = await getDoc(buildRef);
+
+      if (!buildSnap.exists()) return { error: "Build does not exist" };
+
+      const buildData = buildSnap.data();
+      return { build: buildData };
+    }
+    return { error: "No build ID" };
+  }
+  return { error: "No user ID" };
 };
 
 export const getBuilds = async (userId) => {
@@ -63,7 +90,7 @@ export const getBuilds = async (userId) => {
     return { builds };
   }
 
-  return { error: "No userId" };
+  return { error: "No user ID" };
 };
 
 export const getUsername = async (userId) => {
@@ -77,29 +104,12 @@ export const getUsername = async (userId) => {
 };
 
 export const updateUser = async (username) => {
-  if (auth.currentUser && username !== "") {
-    const userRef = doc(db, "users", auth.currentUser.uid);
+  if (firebaseAuth?.currentUser && username !== "") {
+    const userRef = doc(db, "users", firebaseAuth.currentUser.uid);
     await updateDoc(userRef, {
       username,
     });
     return { username };
   }
   return { error: "Failed to update user" };
-};
-
-export const getBuild = async (userId, buildId) => {
-  if (!userId && !buildId) return { build: null };
-
-  const userRef = doc(db, "users", userId);
-  const buildRef = doc(db, "users", userId, "builds", buildId);
-  const userSnap = await getDoc(userRef);
-  const buildSnap = await getDoc(buildRef);
-
-  if (userSnap.exists && buildSnap.exists) {
-    const userData = userSnap.data();
-    const buildData = buildSnap.data();
-    buildData.username = userData.username;
-    return { build: buildData };
-  }
-  return { build: null };
 };

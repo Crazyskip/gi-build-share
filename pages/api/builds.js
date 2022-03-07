@@ -1,13 +1,17 @@
-import { getBuilds } from "../../firebase/firebase.utils";
+import { getBuilds, getUser } from "../../firebase/firebase.utils";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
-    try {
-      const { userId } = req.query;
+    const { userId } = req.query;
+    const { user } = await getUser(userId);
+    if (user) {
       const { builds } = await getBuilds(userId);
-      return res.status(200).json({ builds });
-    } catch (error) {
-      return res.status(404);
+      if (builds) {
+        return res.status(200).json({ builds });
+      }
+      return res.status(200).json({ builds: [] });
+    } else {
+      return res.status(404).json({ error: { message: "User not found" } });
     }
   } else {
     return res.status(400);
