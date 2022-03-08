@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import useSWR from "swr";
 import BuildsBox from "../../../components/BuildsBox/BuildsBox.component";
+import Loader from "../../../components/Loader/Loader.component";
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -28,7 +29,7 @@ const Builds = () => {
 
   if (error) return <div>{error.info}</div>;
 
-  if (!data) return <div>Loading...</div>;
+  if (!data) return <Loader />;
 
   return (
     <>

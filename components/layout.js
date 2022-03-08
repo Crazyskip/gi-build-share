@@ -3,6 +3,7 @@ import styled from "styled-components";
 import device from "../commons/breakpoints";
 import { UserContext } from "../utils/UserContext";
 import { useAuth } from "../hooks/useAuth";
+import Loader from "./Loader/Loader.component";
 
 const MainContainer = styled.main`
   margin: 15px 10px;
@@ -23,7 +24,7 @@ const MainContainer = styled.main`
 export default function Layout({ children }) {
   const auth = useAuth();
 
-  if (auth.isLoading) return <div>Loading...</div>;
+  if (auth.isLoading) return <Loader />;
 
   return (
     <>

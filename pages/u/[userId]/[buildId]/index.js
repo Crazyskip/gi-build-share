@@ -7,6 +7,7 @@ import useSWR from "swr";
 
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Loader from "../../../../components/Loader/Loader.component";
 
 const BuildContainer = styled.div`
   max-width: 1200px;
@@ -49,7 +50,7 @@ const Build = () => {
 
   if (error) return <div>{error.info}</div>;
 
-  if (!data) return <div>Loading...</div>;
+  if (!data) return <Loader />;
 
   return (
     <>

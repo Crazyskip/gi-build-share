@@ -6,6 +6,7 @@ import useSWR from "swr";
 import device from "../../commons/breakpoints";
 import AddBuildButton from "../../components/AddBuildButton/AddBuildButton.component";
 import BuildsBox from "../../components/BuildsBox/BuildsBox.component";
+import Loader from "../../components/Loader/Loader.component";
 import { useAuth } from "../../hooks/useAuth";
 
 const StyledHeader = styled.header`
@@ -37,7 +38,7 @@ const Builds = () => {
     if (!auth.user) router.push("/");
   }, [auth.user, router]);
 
-  if (!data) return <div>Loading...</div>;
+  if (!data) return <Loader />;
 
   return (
     <div>
