@@ -8,10 +8,20 @@ import useSWR from "swr";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Loader from "../../../../components/Loader/Loader.component";
+import { useEffect, useState } from "react";
+import device from "../../../../commons/breakpoints";
 
 const BuildContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+`;
+
+const CustomHeight = styled.div`
+  margin: 0 auto;
+  @media only screen and ${device.lg} {
+    max-width: 1200px;
+    width: ${(props) => props.width}px;
+  }
 `;
 
 const StyledCarousel = styled(Carousel)`
@@ -37,6 +47,7 @@ const fetcher = async (url) => {
 };
 
 const Build = () => {
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const router = useRouter();
   const { userId, buildId } = router.query;
 
@@ -52,6 +63,10 @@ const Build = () => {
 
   if (!data) return <Loader />;
 
+  const onImageLoad = ({ target: img }) => {
+    setDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+  };
+
   return (
     <>
       <Head>
@@ -59,59 +74,30 @@ const Build = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <BuildContainer>
-        <StyledCarousel showThumbs={false}>
-          <Image
-            src={data.build.summaryImg}
-            alt="summary"
-            layout="responsive"
-            height="900"
-            width="1600"
-            priority
-          />
-          <Image
-            src={data.build.weaponImg}
-            alt="weapon"
-            layout="responsive"
-            height="900"
-            width="1600"
-          />
-          <Image
-            src={data.build.flowerImg}
-            alt="flower"
-            layout="responsive"
-            height="900"
-            width="1600"
-          />
-          <Image
-            src={data.build.plumeImg}
-            alt="plume"
-            layout="responsive"
-            height="900"
-            width="1600"
-          />
-          <Image
-            src={data.build.sandsImg}
-            alt="sands"
-            layout="responsive"
-            height="900"
-            width="1600"
-          />
-          <Image
-            src={data.build.gobletImg}
-            alt="goblet"
-            layout="responsive"
-            height="900"
-            width="1600"
-          />
-          <Image
-            src={data.build.circletImg}
-            alt="circlet"
-            layout="responsive"
-            height="900"
-            width="1600"
-          />
-        </StyledCarousel>
-        <h1>{data.build.title}</h1>
+        <CustomHeight
+          width={
+            dimensions.width ? (675 / dimensions.height) * dimensions.width : 0
+          }
+        >
+          <StyledCarousel showThumbs={false}>
+            <Image
+              src={data.build.summaryURL}
+              onLoad={onImageLoad}
+              alt="summary"
+              layout="responsive"
+              height={dimensions.height}
+              width={dimensions.width}
+              priority
+            />
+            <Image src={data.build.weaponURL} alt="weapon" layout="fill" />
+            <Image src={data.build.flowerURL} alt="flower" layout="fill" />
+            <Image src={data.build.plumeURL} alt="plume" layout="fill" />
+            <Image src={data.build.sandsURL} alt="sands" layout="fill" />
+            <Image src={data.build.gobletURL} alt="goblet" layout="fill" />
+            <Image src={data.build.circletURL} alt="circlet" layout="fill" />
+          </StyledCarousel>
+        </CustomHeight>
+        <h1>{data.build.buildName}</h1>
         <Link href={`/u/${userId}`}>
           <a>{data.build.username}</a>
         </Link>

@@ -6,14 +6,14 @@ const BuildItem = ({ build, userId }) => {
     <Link href={`/u/${userId}/${build.id}`} passHref>
       <BuildContainer>
         <StyledImage
-          src={build.summaryImg}
+          src={build.summaryURL}
           alt="build summary"
           layout="responsive"
           height="675"
           width="1200"
           priority
         />
-        <BuildTitle>{build.title}</BuildTitle>
+        <BuildTitle>{build.buildName}</BuildTitle>
       </BuildContainer>
     </Link>
   );

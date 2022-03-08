@@ -7,7 +7,8 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { firebaseAuth, db } from "./firebase.config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { firebaseAuth, db, storage } from "./firebase.config";
 
 export const checkNewUser = async (user) => {
   const docRef = doc(db, "users", user.uid);
@@ -24,26 +25,6 @@ export const checkNewUser = async (user) => {
     } catch (error) {
       console.error("Error creating user", error.message);
     }
-  }
-};
-
-export const addBuild = async () => {
-  const title = "Test Build";
-  const description = "Test Description";
-  const createdAt = new Date();
-
-  try {
-    const docRef = await addDoc(
-      collection(db, "users", firebaseAuth.currentUser.uid, "builds"),
-      {
-        title,
-        description,
-        createdAt,
-      }
-    );
-    console.log("Build added with ID: ", docRef.id);
-  } catch (error) {
-    console.error("Error adding build", error.message);
   }
 };
 
@@ -112,4 +93,86 @@ export const updateUser = async (username) => {
     return { username };
   }
   return { error: "Failed to update user" };
+};
+
+export const createBuild = async (
+  buildName,
+  summaryImg,
+  weaponImg,
+  flowerImg,
+  plumeImg,
+  sandsImg,
+  gobletImg,
+  circletImg
+) => {
+  const summaryID = crypto.randomUUID();
+  const weaponID = crypto.randomUUID();
+  const flowerID = crypto.randomUUID();
+  const plumeID = crypto.randomUUID();
+  const sandsID = crypto.randomUUID();
+  const gobletID = crypto.randomUUID();
+  const circletID = crypto.randomUUID();
+
+  const summaryRef = ref(storage, summaryID);
+  const weaponRef = ref(storage, weaponID);
+  const flowerRef = ref(storage, flowerID);
+  const plumeRef = ref(storage, plumeID);
+  const sandsRef = ref(storage, sandsID);
+  const gobletRef = ref(storage, gobletID);
+  const circletRef = ref(storage, circletID);
+
+  console.log("Uploading Files...");
+
+  const uploadPromises = [
+    uploadBytes(summaryRef, summaryImg),
+    uploadBytes(weaponRef, weaponImg),
+    uploadBytes(flowerRef, flowerImg),
+    uploadBytes(plumeRef, plumeImg),
+    uploadBytes(sandsRef, sandsImg),
+    uploadBytes(gobletRef, gobletImg),
+    uploadBytes(circletRef, circletImg),
+  ];
+
+  await Promise.all(uploadPromises);
+
+  console.log("Uploaded Files");
+  console.log("Getting Download URLs");
+
+  const downloadURLPromises = [
+    getDownloadURL(summaryRef),
+    getDownloadURL(weaponRef),
+    getDownloadURL(flowerRef),
+    getDownloadURL(plumeRef),
+    getDownloadURL(sandsRef),
+    getDownloadURL(gobletRef),
+    getDownloadURL(circletRef),
+  ];
+
+  const downloadURLs = await Promise.all(downloadURLPromises);
+
+  const createdAt = new Date();
+
+  const newBuildRef = await addDoc(
+    collection(db, "users", firebaseAuth.currentUser.uid, "builds"),
+    {
+      buildName,
+      summaryID,
+      summaryURL: downloadURLs[0],
+      weaponID,
+      weaponURL: downloadURLs[1],
+      flowerID,
+      flowerURL: downloadURLs[2],
+      plumeID,
+      plumeURL: downloadURLs[3],
+      sandsID,
+      sandsURL: downloadURLs[4],
+      gobletID,
+      gobletURL: downloadURLs[5],
+      circletID,
+      circletURL: downloadURLs[6],
+      createdAt,
+    }
+  );
+
+  console.log("Build added with ID: ", newBuildRef.id);
 };

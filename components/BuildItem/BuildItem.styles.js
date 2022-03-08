@@ -23,4 +23,5 @@ export const BuildTitle = styled.h3`
 
 export const StyledImage = styled(Image)`
   border-radius: 10px 10px 0px 0px;
+  object-fit: cover;
 `;
