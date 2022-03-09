@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../components/Layout.js";
 import { createGlobalStyle } from "styled-components";
 import { paleGrey, veryDarkNavy } from "../utils/colors";
 import { ProvideAuth } from "../hooks/useAuth";
