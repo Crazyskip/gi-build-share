@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../../utils/UserContext";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CustomImageInput from "../../../components/CustomImageInput/CustomImageInput.component";
 import { lightGrey } from "../../../utils/colors";
 import { createBuild } from "../../../firebase/firebase.utils";
 import device from "../../../commons/breakpoints";
+import { useAuth } from "../../../hooks/useAuth";
 
 const Title = styled.h1`
   text-align: center;
@@ -86,12 +86,12 @@ const AddBuild = () => {
   });
   const [invalid, setInvalid] = useState(null);
 
-  const user = useContext(UserContext);
+  const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) router.push("/");
-  }, [user, router]);
+    if (!auth.user) router.push("/");
+  }, [auth.user, router]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;

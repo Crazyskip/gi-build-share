@@ -10,6 +10,8 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Loader from "../../../../components/Loader/Loader.component";
 import device from "../../../../commons/breakpoints";
+import { useAuth } from "../../../../hooks/useAuth";
+import { deleteBuild } from "../../../../firebase/firebase.utils";
 
 const BuildContainer = styled.div`
   max-width: 1200px;
@@ -17,6 +19,7 @@ const BuildContainer = styled.div`
 `;
 
 const CustomHeight = styled.div`
+  display: ${(props) => (props.width ? "block" : "none")};
   margin: 0 auto;
   @media only screen and ${device.lg} {
     max-width: 100%;
@@ -49,7 +52,13 @@ const fetcher = async (url) => {
 const Build = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const router = useRouter();
+  const auth = useAuth();
   const { userId, buildId } = router.query;
+
+  const deleteCurrentBuild = async () => {
+    await deleteBuild(userId, buildId);
+    router.push("/builds");
+  };
 
   const { data, error } = useSWR(
     () =>
@@ -101,6 +110,9 @@ const Build = () => {
         <Link href={`/u/${userId}`}>
           <a>{data.build.username}</a>
         </Link>
+        {auth.user?.uid === userId ? (
+          <div onClick={deleteCurrentBuild}>Delete</div>
+        ) : null}
       </BuildContainer>
     </>
   );
