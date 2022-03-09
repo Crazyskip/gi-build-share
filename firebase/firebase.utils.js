@@ -114,61 +114,21 @@ export const deleteBuild = async (userId, buildId) => {
     const gobletRef = ref(storage, build.gobletID);
     const circletRef = ref(storage, build.circletID);
 
-    deleteObject(summaryRef)
-      .then(() => {
-        console.log("Deleted Summary");
-      })
-      .catch((error) => {
-        console.error("Failed to delete summary", error);
-      });
+    const deletePromises = [
+      deleteObject(summaryRef),
+      deleteObject(weaponRef),
+      deleteObject(flowerRef),
+      deleteObject(plumeRef),
+      deleteObject(sandsRef),
+      deleteObject(gobletRef),
+      deleteObject(circletRef),
+    ];
 
-    deleteObject(weaponRef)
-      .then(() => {
-        console.log("Deleted weapon");
-      })
-      .catch((error) => {
-        console.error("Failed to delete weapon", error);
-      });
-
-    deleteObject(flowerRef)
-      .then(() => {
-        console.log("Deleted flower");
-      })
-      .catch((error) => {
-        console.error("Failed to delete flower", error);
-      });
-
-    deleteObject(plumeRef)
-      .then(() => {
-        console.log("Deleted plume");
-      })
-      .catch((error) => {
-        console.error("Failed to delete plume", error);
-      });
-
-    deleteObject(sandsRef)
-      .then(() => {
-        console.log("Deleted sands");
-      })
-      .catch((error) => {
-        console.error("Failed to delete sands", error);
-      });
-
-    deleteObject(gobletRef)
-      .then(() => {
-        console.log("Deleted goblet");
-      })
-      .catch((error) => {
-        console.error("Failed to delete goblet", error);
-      });
-
-    deleteObject(circletRef)
-      .then(() => {
-        console.log("Deleted circlet");
-      })
-      .catch((error) => {
-        console.error("Failed to delete circlet", error);
-      });
+    try {
+      await Promise.all(deletePromises);
+    } catch (error) {
+      console.error("Failed to delete file", error);
+    }
 
     await deleteDoc(doc(db, "users", userId, "builds", buildId));
   }

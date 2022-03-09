@@ -1,11 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import CustomImageInput from "../../../components/CustomImageInput/CustomImageInput.component";
-import { lightGrey } from "../../../utils/colors";
-import { createBuild } from "../../../firebase/firebase.utils";
-import device from "../../../commons/breakpoints";
+import AddBuildForm from "../../../components/AddBuildForm/AddBuildForm.component";
 import { useAuth } from "../../../hooks/useAuth";
 
 const Title = styled.h1`
@@ -14,126 +11,13 @@ const Title = styled.h1`
   margin-bottom: 25px;
 `;
 
-const LabelContainer = styled.div`
-  font-size: 1.25rem;
-  width: 100px;
-  text-align: right;
-  padding-right: 20px;
-`;
-
-const TextInputContainer = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  @media only screen and ${device.sm} {
-    flex-direction: row;
-  }
-`;
-
-const CustomInput = styled.input`
-  font-size: 1.25rem;
-  padding: 5px;
-  width: 100%;
-  border-radius: 5px;
-
-  @media only screen and ${device.sm} {
-    max-width: 300px;
-  }
-`;
-
-const CustomButton = styled.button`
-  margin: 0 auto;
-  width: 200px;
-  font-size: 1.25rem;
-  padding: 10px 30px;
-  border: none;
-  border-radius: 10px;
-
-  &:hover {
-    cursor: pointer;
-    background-color: ${lightGrey};
-  }
-
-  @media only screen and ${device.sm} {
-    margin-left: 100px;
-  }
-`;
-
-const Invalid = styled.div`
-  color: #de0202;
-  margin-top: 10px;
-  font-size: 1.2rem;
-
-  @media only screen and ${device.sm} {
-    margin-left: 100px;
-  }
-`;
-
 const AddBuild = () => {
-  const [formValues, setFormValues] = useState({
-    buildName: "",
-  });
-  const [selectedFiles, setSelectedFiles] = useState({
-    summaryImg: null,
-    weaponImg: null,
-    flowerImg: null,
-    plumeImg: null,
-    sandsImg: null,
-    gobletImg: null,
-    circletImg: null,
-  });
-  const [invalid, setInvalid] = useState(null);
-
   const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!auth.user) router.push("/");
   }, [auth.user, router]);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const handleFileChange = (name, file) => {
-    setSelectedFiles({ ...selectedFiles, [name]: file });
-  };
-
-  const onSubmit = () => {
-    setInvalid(null);
-    if (formValues.buildName === "") {
-      setInvalid("Invalid build name");
-      return;
-    }
-    if (Object.values(selectedFiles).every((val) => val !== null)) {
-      createBuild(
-        formValues.buildName,
-        selectedFiles.summaryImg,
-        selectedFiles.weaponImg,
-        selectedFiles.flowerImg,
-        selectedFiles.plumeImg,
-        selectedFiles.sandsImg,
-        selectedFiles.gobletImg,
-        selectedFiles.circletImg
-      ).then(() => {
-        setFormValues({ buildName: "" });
-        setSelectedFiles({
-          summaryImg: null,
-          weaponImg: null,
-          flowerImg: null,
-          plumeImg: null,
-          sandsImg: null,
-          gobletImg: null,
-          circletImg: null,
-        });
-      });
-    } else {
-      setInvalid("Ensure all images are selected");
-    }
-  };
 
   return (
     <div>
@@ -142,69 +26,7 @@ const AddBuild = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Title>Add Build</Title>
-      <TextInputContainer>
-        <LabelContainer>Name</LabelContainer>
-        <CustomInput
-          name="buildName"
-          type="text"
-          label="Build Name"
-          value={formValues.buildName}
-          onChange={handleChange}
-          autoComplete="off"
-          required
-        />
-      </TextInputContainer>
-
-      <CustomImageInput
-        name="summaryImg"
-        label="Summary"
-        handleFileChange={handleFileChange}
-        file={selectedFiles.summaryImg}
-      />
-
-      <CustomImageInput
-        name="weaponImg"
-        label="Weapon"
-        handleFileChange={handleFileChange}
-        file={selectedFiles.weaponImg}
-      />
-
-      <CustomImageInput
-        name="flowerImg"
-        label="Flower"
-        handleFileChange={handleFileChange}
-        file={selectedFiles.flowerImg}
-      />
-
-      <CustomImageInput
-        name="plumeImg"
-        label="Plume"
-        handleFileChange={handleFileChange}
-        file={selectedFiles.plumeImg}
-      />
-
-      <CustomImageInput
-        name="sandsImg"
-        label="Sands"
-        handleFileChange={handleFileChange}
-        file={selectedFiles.sandsImg}
-      />
-
-      <CustomImageInput
-        name="gobletImg"
-        label="Goblet"
-        handleFileChange={handleFileChange}
-        file={selectedFiles.gobletImg}
-      />
-
-      <CustomImageInput
-        name="circletImg"
-        label="Circlet"
-        handleFileChange={handleFileChange}
-        file={selectedFiles.circletImg}
-      />
-      <CustomButton onClick={onSubmit}>Submit</CustomButton>
-      {invalid ? <Invalid>{invalid}</Invalid> : null}
+      <AddBuildForm />
     </div>
   );
 };
