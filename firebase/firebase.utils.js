@@ -69,12 +69,13 @@ export const getBuilds = async (userId) => {
 
     if (!userSnap.exists()) return { error: "User does not exist" };
 
+    const userData = userSnap.data();
     const buildsSnap = await getDocs(collection(db, "users", userId, "builds"));
-    const builds = [];
+    const data = { builds: [], username: userData.username };
     buildsSnap.forEach((doc) => {
-      builds.push({ id: doc.id, ...doc.data() });
+      data.builds.push({ id: doc.id, ...doc.data() });
     });
-    return { builds };
+    return data;
   }
 
   return { error: "No user ID" };
@@ -105,7 +106,6 @@ export const deleteBuild = async (userId, buildId) => {
   const { build } = await getBuild(userId, buildId);
 
   if (firebaseAuth.currentUser.uid === userId) {
-    console.log(build);
     const summaryRef = ref(storage, build.summaryID);
     const weaponRef = ref(storage, build.weaponID);
     const flowerRef = ref(storage, build.flowerID);

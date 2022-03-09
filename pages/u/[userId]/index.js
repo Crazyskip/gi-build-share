@@ -1,35 +1,27 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-
-import useSWR from "swr";
+import styled from "styled-components";
 import BuildsBox from "../../../components/BuildsBox/BuildsBox.component";
 import Loader from "../../../components/Loader/Loader.component";
+import { useBuilds } from "../../../hooks/useBuilds";
 
-const fetcher = async (url) => {
-  const res = await fetch(url);
-
-  if (!res.ok) {
-    const error = new Error("An error occurred while fetching the data.");
-    const response = await res.json();
-    error.info = response.error.message;
-    error.status = res.status;
-    throw error;
-  }
-  return res.json();
-};
+const Title = styled.h2`
+  margin: 0 0 25px 0;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+`;
 
 const Builds = () => {
   const router = useRouter();
   const { userId } = router.query;
 
-  const { data, error } = useSWR(
-    () => (userId ? `/api/builds?userId=${userId}` : null),
-    fetcher
-  );
+  const { data, isLoading, isError } = useBuilds(userId);
 
-  if (error) return <div>{error.info}</div>;
+  if (isLoading) return <Loader />;
 
-  if (!data) return <Loader />;
+  if (isError) return <div>{isError.info}</div>;
 
   return (
     <>
@@ -37,9 +29,8 @@ const Builds = () => {
         <title>Builds | GI Build Share</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        <BuildsBox builds={data.builds} userId={userId} />
-      </div>
+      <Title>{`${data.username}'s Builds`}</Title>
+      <BuildsBox builds={data.builds} userId={userId} />
     </>
   );
 };

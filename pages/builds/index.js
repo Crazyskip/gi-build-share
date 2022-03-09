@@ -8,6 +8,7 @@ import AddBuildButton from "../../components/AddBuildButton/AddBuildButton.compo
 import BuildsBox from "../../components/BuildsBox/BuildsBox.component";
 import Loader from "../../components/Loader/Loader.component";
 import { useAuth } from "../../hooks/useAuth";
+import { useBuilds } from "../../hooks/useBuilds";
 
 const StyledHeader = styled.header`
   display: flex;
@@ -20,25 +21,25 @@ const StyledHeader = styled.header`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   margin: 0;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 `;
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const Builds = () => {
   const auth = useAuth();
   const router = useRouter();
-  const { data } = useSWR(
-    () => (auth.user.uid ? `/api/builds?userId=${auth.user.uid}` : null),
-    fetcher
-  );
+  const { data, isLoading, isError } = useBuilds(auth.user.uid);
 
   useEffect(() => {
     if (!auth.user) router.push("/");
   }, [auth.user, router]);
 
-  if (!data) return <Loader />;
+  if (isLoading) return <Loader />;
+
+  if (isError) return <div>{isError.info}</div>;
 
   return (
     <div>
