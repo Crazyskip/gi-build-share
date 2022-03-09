@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styled from "styled-components";
 import device from "../../commons/breakpoints";
 import { blue, lightBlue } from "../../utils/colors";

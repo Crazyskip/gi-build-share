@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { createBuild } from "../../firebase/firebase.utils";
 import CustomImageInput from "../CustomImageInput/CustomImageInput.component";
@@ -10,6 +11,8 @@ import {
 } from "./AddBuildForm.styles";
 
 const AddBuildForm = () => {
+  const router = useRouter();
+
   const [formValues, setFormValues] = useState({
     buildName: "",
   });
@@ -52,16 +55,7 @@ const AddBuildForm = () => {
         selectedFiles.gobletImg,
         selectedFiles.circletImg
       ).then(() => {
-        setFormValues({ buildName: "" });
-        setSelectedFiles({
-          summaryImg: null,
-          weaponImg: null,
-          flowerImg: null,
-          plumeImg: null,
-          sandsImg: null,
-          gobletImg: null,
-          circletImg: null,
-        });
+        router.push("/builds");
       });
     } else {
       setInvalid("Ensure all images are selected");

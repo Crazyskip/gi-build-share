@@ -5,10 +5,12 @@ import styled from "styled-components";
 import AddBuildForm from "../../../components/AddBuildForm/AddBuildForm.component";
 import { useAuth } from "../../../hooks/useAuth";
 
-const Title = styled.h1`
+const Title = styled.h2`
+  margin: 0 0 25px 0;
   text-align: center;
-  margin: 0;
-  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 `;
 
 const AddBuild = () => {
@@ -20,14 +22,14 @@ const AddBuild = () => {
   }, [auth.user, router]);
 
   return (
-    <div>
+    <>
       <Head>
         <title>Add Build | GI Build Share</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Title>Add Build</Title>
       <AddBuildForm />
-    </div>
+    </>
   );
 };
 
