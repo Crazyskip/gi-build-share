@@ -3,7 +3,6 @@ import {
   Container,
   CustomImageInputContainer,
   LabelContainer,
-  SelectedImageContainer,
 } from "./CustomImageInput.styles";
 
 const CustomImageInput = ({ name, label, handleFileChange, file }) => {

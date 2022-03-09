@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import device from "../../commons/breakpoints";
 
 const getColor = (props) => {
   if (props.isDragAccept) {
@@ -17,18 +18,29 @@ export const CustomImageInputContainer = styled.div`
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+  flex-direction: column;
+
+  @media only screen and ${device.sm} {
+    flex-direction: row;
+  }
 `;
 
 export const LabelContainer = styled.div`
   font-size: 1.25rem;
-  width: 100px;
-  text-align: right;
-  padding-right: 20px;
+  padding: 0;
+
+  @media only screen and ${device.sm} {
+    padding-right: 20px;
+    text-align: right;
+    width: 100px;
+  }
 `;
 
 export const Container = styled.div`
+  font-size: 0.9rem;
   flex: 1;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   padding: 0px 15px;
@@ -44,9 +56,8 @@ export const Container = styled.div`
   &:hover {
     cursor: pointer;
   }
-`;
 
-export const SelectedImageContainer = styled.div`
-  width: 50%;
-  padding-left: 15px;
+  @media only screen and ${device.md} {
+    font-size: 1rem;
+  }
 `;

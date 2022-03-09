@@ -6,6 +6,7 @@ import styled from "styled-components";
 import CustomImageInput from "../../../components/CustomImageInput/CustomImageInput.component";
 import { lightGrey } from "../../../utils/colors";
 import { createBuild } from "../../../firebase/firebase.utils";
+import device from "../../../commons/breakpoints";
 
 const Title = styled.h1`
   text-align: center;
@@ -21,18 +22,30 @@ const LabelContainer = styled.div`
 `;
 
 const TextInputContainer = styled.div`
+  margin-bottom: 20px;
   display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  @media only screen and ${device.sm} {
+    flex-direction: row;
+  }
 `;
 
 const CustomInput = styled.input`
   font-size: 1.25rem;
   padding: 5px;
-  margin-bottom: 20px;
-  width: 255px;
+  width: 100%;
+  border-radius: 5px;
+
+  @media only screen and ${device.sm} {
+    max-width: 300px;
+  }
 `;
 
 const CustomButton = styled.button`
-  margin-left: 100px;
+  margin: 0 auto;
+  width: 200px;
   font-size: 1.25rem;
   padding: 10px 30px;
   border: none;
@@ -42,13 +55,20 @@ const CustomButton = styled.button`
     cursor: pointer;
     background-color: ${lightGrey};
   }
+
+  @media only screen and ${device.sm} {
+    margin-left: 100px;
+  }
 `;
 
 const Invalid = styled.div`
   color: #de0202;
-  margin-left: 100px;
   margin-top: 10px;
   font-size: 1.2rem;
+
+  @media only screen and ${device.sm} {
+    margin-left: 100px;
+  }
 `;
 
 const AddBuild = () => {
@@ -130,6 +150,7 @@ const AddBuild = () => {
           label="Build Name"
           value={formValues.buildName}
           onChange={handleChange}
+          autoComplete="off"
           required
         />
       </TextInputContainer>

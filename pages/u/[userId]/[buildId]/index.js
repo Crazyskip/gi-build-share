@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import useSWR from "swr";
+import { useState } from "react";
 
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Loader from "../../../../components/Loader/Loader.component";
-import { useEffect, useState } from "react";
 import device from "../../../../commons/breakpoints";
 
 const BuildContainer = styled.div`
@@ -19,7 +19,7 @@ const BuildContainer = styled.div`
 const CustomHeight = styled.div`
   margin: 0 auto;
   @media only screen and ${device.lg} {
-    max-width: 1200px;
+    max-width: 100%;
     width: ${(props) => props.width}px;
   }
 `;
