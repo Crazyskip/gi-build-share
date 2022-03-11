@@ -38,6 +38,7 @@ export const LabelContainer = styled.div`
 
 export const Container = styled.div`
   font-size: 0.9rem;
+  text-align: center;
   flex: 1;
   display: flex;
   width: 100%;

@@ -10,6 +10,7 @@ const CustomImageInput = ({ name, label, handleFileChange, file }) => {
     useDropzone({
       accept: ["image/jpeg", "image/png", "image/webp"],
       maxFiles: 1,
+      maxSize: 1048576,
       onDrop: (acceptedFiles) => {
         handleFileChange(name, acceptedFiles[0]);
       },
@@ -23,7 +24,7 @@ const CustomImageInput = ({ name, label, handleFileChange, file }) => {
         <p>
           {file
             ? file.name
-            : "Drag 'n' drop image here, or click to select file"}
+            : "Drag 'n' drop image here, or click to select file (Max 1MB)"}
         </p>
       </Container>
     </CustomImageInputContainer>
