@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import device from "../../commons/breakpoints";
-import { lightGrey } from "../../utils/colors";
+import { darkGrey, grey, lightGrey } from "../../utils/colors";
 
 export const LabelContainer = styled.div`
   font-size: 1.25rem;
@@ -42,6 +42,15 @@ export const CustomButton = styled.button`
   &:hover {
     cursor: pointer;
     background-color: ${lightGrey};
+  }
+
+  &:disabled {
+    color: ${grey};
+    background-color: ${darkGrey};
+
+    &:hover {
+      background-color: ${darkGrey};
+    }
   }
 
   @media only screen and ${device.sm} {

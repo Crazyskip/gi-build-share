@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import Loader from "../components/Loader/Loader.component";
 import { updateUser } from "../firebase/firebase.utils";
 import { useAuth } from "../hooks/useAuth";
 
@@ -65,6 +66,8 @@ const Profile = () => {
       setUsername(auth.user.username);
     }
   }, [auth.user, router]);
+
+  if (!auth.user) return <Loader />;
 
   return (
     <>

@@ -16,6 +16,7 @@ const AddBuildForm = () => {
   const [formValues, setFormValues] = useState({
     buildName: "",
   });
+  const [disabled, setDisabled] = useState(false);
 
   const [selectedFiles, setSelectedFiles] = useState({
     summaryImg: null,
@@ -45,6 +46,7 @@ const AddBuildForm = () => {
       return;
     }
     if (Object.values(selectedFiles).every((val) => val !== null)) {
+      setDisabled(true);
       createBuild(
         formValues.buildName,
         selectedFiles.summaryImg,
@@ -55,6 +57,7 @@ const AddBuildForm = () => {
         selectedFiles.gobletImg,
         selectedFiles.circletImg
       ).then(() => {
+        setDisabled(false);
         router.push("/builds");
       });
     } else {
@@ -124,7 +127,9 @@ const AddBuildForm = () => {
         handleFileChange={handleFileChange}
         file={selectedFiles.circletImg}
       />
-      <CustomButton onClick={onSubmit}>Submit</CustomButton>
+      <CustomButton onClick={onSubmit} disabled={disabled}>
+        Submit
+      </CustomButton>
       {invalid ? <Invalid>{invalid}</Invalid> : null}
     </>
   );

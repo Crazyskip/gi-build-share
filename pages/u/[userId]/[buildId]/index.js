@@ -64,7 +64,7 @@ const Details = styled.div`
 
 const StyledLink = styled.a`
   margin: 50px 0 0 25px;
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 500;
 
   &:hover {

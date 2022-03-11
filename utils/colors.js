@@ -1,6 +1,7 @@
 export const paleGrey = "#efefef";
 export const lightGrey = "#d1d1d1";
 export const grey = "#b0b0b0";
+export const darkGrey = "#5c5c5c";
 
 export const lightBlue = "#4ff0ff";
 export const blue = "#4fd6ff";

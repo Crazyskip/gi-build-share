@@ -2,7 +2,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import styled from "styled-components";
-import useSWR from "swr";
 import device from "../../commons/breakpoints";
 import AddBuildButton from "../../components/AddBuildButton/AddBuildButton.component";
 import BuildsBox from "../../components/BuildsBox/BuildsBox.component";
@@ -31,7 +30,7 @@ const Title = styled.h2`
 const Builds = () => {
   const auth = useAuth();
   const router = useRouter();
-  const { data, isLoading, isError } = useBuilds(auth.user.uid);
+  const { data, isLoading, isError } = useBuilds(auth.user?.uid);
 
   useEffect(() => {
     if (!auth.user) router.push("/");
@@ -51,7 +50,7 @@ const Builds = () => {
         <Title>My Builds</Title>
         <AddBuildButton />
       </StyledHeader>
-      <BuildsBox builds={data.builds} userId={auth.user.uid} />
+      <BuildsBox builds={data.builds} userId={auth.user?.uid} />
     </div>
   );
 };
