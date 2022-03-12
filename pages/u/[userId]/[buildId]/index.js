@@ -12,9 +12,9 @@ import device from "../../../../commons/breakpoints";
 import { useAuth } from "../../../../hooks/useAuth";
 import { deleteBuild } from "../../../../firebase/firebase.utils";
 import { useBuild } from "../../../../hooks/useBuild";
-import { grey, lightGrey } from "../../../../utils/colors";
-import AddBuildButton from "../../../../components/AddBuildButton/AddBuildButton.component";
+import { lightGrey } from "../../../../utils/colors";
 import DeleteButton from "../../../../components/DeleteButton/DeleteButton.component";
+import { useBuilds } from "../../../../hooks/useBuilds";
 
 const BuildContainer = styled.div`
   max-width: 1200px;
@@ -77,13 +77,19 @@ const Build = () => {
   const router = useRouter();
   const auth = useAuth();
   const { userId, buildId } = router.query;
+  const { data, isLoading, isError, mutate } = useBuild(userId, buildId);
 
   const deleteCurrentBuild = async () => {
     await deleteBuild(userId, buildId);
+
+    // set the cookie as expired
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+    // tell all SWRs with this key to revalidate
+    mutate(`/api/builds?userId=${userId}`);
+
     router.push("/builds");
   };
-
-  const { data, isLoading, isError } = useBuild(userId, buildId);
 
   if (isLoading) return <Loader />;
 

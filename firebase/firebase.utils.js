@@ -131,8 +131,6 @@ export const deleteBuild = async (userId, buildId) => {
     }
 
     await deleteDoc(doc(db, "users", userId, "builds", buildId));
-
-    await delay(500);
   }
 };
 

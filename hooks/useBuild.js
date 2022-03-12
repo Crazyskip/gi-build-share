@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -20,10 +20,12 @@ export const useBuild = (userId, buildId) => {
     `/api/build?userId=${userId}&buildId=${buildId}`,
     fetcher
   );
+  const { mutate } = useSWRConfig();
 
   return {
     data: data,
     isLoading: !error && !data,
     isError: error,
+    mutate: mutate,
   };
 };
