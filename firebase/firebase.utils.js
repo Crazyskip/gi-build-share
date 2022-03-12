@@ -131,6 +131,8 @@ export const deleteBuild = async (userId, buildId) => {
     }
 
     await deleteDoc(doc(db, "users", userId, "builds", buildId));
+
+    await delay(500);
   }
 };
 
@@ -215,3 +217,8 @@ export const createBuild = async (
 
   console.log("Build added with ID: ", newBuildRef.id);
 };
+
+const delay = (ms) =>
+  new Promise((resolve, reject) => {
+    setTimeout((_) => resolve(), ms);
+  });
